@@ -18,8 +18,8 @@ idioma_origen = st.selectbox("Idioma de origen", list(idiomas.keys()))
 idioma_destino = st.selectbox("Idioma de destino", list(idiomas.keys()))
 
 #openai_api_key = st.text_input("🔑 Introduce tu OpenAI API Key", type="password")
+openai_api_key=st.secrets["APIKEY"]
 
-openai_api_key="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"
 audio_file = st.audio_input("🎤 Graba tu voz")
 
 if audio_file is not None and openai_api_key:
