@@ -1,4 +1,4 @@
 streamlit
 deep_translator
 gtts
-openai==28
+openai>=1.0
