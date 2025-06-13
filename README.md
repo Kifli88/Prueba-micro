@@ -15,3 +15,4 @@ Este proyecto es una app en Streamlit que permite traducir texto entre varios id
 - Streamlit
 - googletrans
 - gTTS
+- OpenAI
