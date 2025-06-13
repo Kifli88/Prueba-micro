@@ -1,10 +1,11 @@
 import streamlit as st
 import openai
+from openai import OpenAI
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 import tempfile
 
-st.title("🌍 Traductor por voz con Whisper (OpenAI)")
+st.title("🌍 Traductor por voz con Whisper (OpenAI v1.0+)")
 
 idiomas = {
     "Español": "es",
@@ -17,12 +18,11 @@ idiomas = {
 idioma_origen = st.selectbox("Idioma de origen", list(idiomas.keys()))
 idioma_destino = st.selectbox("Idioma de destino", list(idiomas.keys()))
 
-#openai_api_key = st.text_input("🔑 Introduce tu OpenAI API Key", type="password")
-openai_api_key=st.secrets["APIKEY"]
+api_key=st.secrets["APIKEY"]
 
 audio_file = st.audio_input("🎤 Graba tu voz")
 
-if audio_file is not None and openai_api_key:
+if audio_file is not None and api_key:
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
         f.write(audio_file.read())
         audio_path = f.name
@@ -30,10 +30,14 @@ if audio_file is not None and openai_api_key:
     st.audio(audio_path, format="audio/wav")
 
     try:
-        openai.api_key = openai_api_key
-        with open(audio_path, "rb") as audio:
-            transcript = openai.Audio.transcribe("whisper-1", audio)
-        texto = transcript["text"]
+        client = OpenAI(api_key=api_key)
+        with open(audio_path, "rb") as f:
+            transcript = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=f
+            )
+
+        texto = transcript.text
         st.success(f"📝 Texto transcrito: {texto}")
 
         resultado = GoogleTranslator(source=idiomas[idioma_origen], target=idiomas[idioma_destino]).translate(texto)
@@ -46,5 +50,5 @@ if audio_file is not None and openai_api_key:
 
     except Exception as e:
         st.error(f"❌ Error: {e}")
-elif audio_file and not openai_api_key:
-    st.warning("Por favor, introduce tu OpenAI API Key para transcribir.")
+elif audio_file and not api_key:
+    st.warning("Introduce tu API key para transcribir.")
