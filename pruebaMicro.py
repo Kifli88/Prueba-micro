@@ -1,22 +1,27 @@
 import streamlit as st
-import openai
 from openai import OpenAI
 from deep_translator import GoogleTranslator
+from gtts.lang import tts_langs
 from gtts import gTTS
 import tempfile
 
-st.title("🌍 Traductor por voz con Whisper (OpenAI v1.0+)")
+# Mostrar título
+st.title("🌍 Traductor por voz con Whisper")
 
-idiomas = {
-    "Español": "es",
-    "Inglés": "en",
-    "Francés": "fr",
-    "Alemán": "de",
-    "Italiano": "it"
-}
+# Obtener lista de idiomas soportados por gTTS
+idiomas_disponibles = tts_langs()
 
-idioma_origen = st.selectbox("Idioma de origen", list(idiomas.keys()))
-idioma_destino = st.selectbox("Idioma de destino", list(idiomas.keys()))
+# Invertimos el diccionario para búsqueda por nombre
+idiomas_nombre = list(idiomas_disponibles.keys())
+idiomas_codigo = {nombre: codigo for nombre, codigo in idiomas_disponibles.items()}
+
+# Menús desplegables con búsqueda
+idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombre)
+idioma_destino_nombre = st.selectbox("Idioma de destino", idiomas_nombre)
+
+# Obtener los códigos ISO 639-1
+idioma_origen = idiomas_codigo[idioma_origen_nombre]
+idioma_destino = idiomas_codigo[idioma_destino_nombre]
 
 api_key=st.secrets["APIKEY"]
 
