@@ -1,26 +1,42 @@
 import streamlit as st
-import speech_recognition as sr
+from deep_translator import GoogleTranslator
+from gtts import gTTS
 import tempfile
 
-st.title("🎤 Traductor con entrada de voz en navegador")
+st.title("🌍 Traductor desde voz (compatible con móvil y nube)")
 
-# Grabación desde navegador
-audio_file = st.audio_input("Graba tu voz:")
+idiomas = {
+    "Español": "es",
+    "Inglés": "en",
+    "Francés": "fr",
+    "Alemán": "de",
+    "Italiano": "it"
+}
+
+idioma_origen = st.selectbox("Idioma de origen", list(idiomas.keys()))
+idioma_destino = st.selectbox("Idioma de destino", list(idiomas.keys()))
+
+# Graba desde navegador (funciona en móvil y PC)
+audio_file = st.audio_input("🎤 Graba tu voz en el idioma seleccionado")
 
 if audio_file is not None:
-    st.audio(audio_file)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
+        f.write(audio_file.read())
+        audio_path = f.name
 
-    recognizer = sr.Recognizer()
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio:
-        temp_audio.write(audio_file.read())
-        temp_audio.flush()
-        with sr.AudioFile(temp_audio.name) as source:
-            audio = recognizer.record(source)
+    st.audio(audio_path, format="audio/wav")
 
-    try:
-        texto = recognizer.recognize_google(audio, language="es-ES")
-        st.success(f"Texto reconocido: {texto}")
-    except sr.UnknownValueError:
-        st.error("No se entendió el audio.")
-    except sr.RequestError:
-        st.error("Error al conectar con el servicio de reconocimiento.")
+    # Aquí iría la transcripción con Whisper o API externa.
+    # Como ejemplo, ponemos un texto simulado.
+    texto = "Hola, ¿cómo estás?"
+    st.markdown(f"📝 Texto reconocido (simulado): `{texto}`")
+
+    # Traducción
+    resultado = GoogleTranslator(source=idiomas[idioma_origen], target=idiomas[idioma_destino]).translate(texto)
+    st.success(f"Traducción: {resultado}")
+
+    # Conversión a voz
+    tts = gTTS(text=resultado, lang=idiomas[idioma_destino])
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+        tts.save(fp.name)
+        st.audio(fp.name, format="audio/mp3")
