@@ -8,18 +8,20 @@ import tempfile
 # Mostrar título
 st.title("🌍 Traductor por voz con Whisper")
 
-# Obtener lista de idiomas soportados por gTTS
-idiomas_disponibles = tts_langs()
-idiomas_ordenados = sorted(idiomas_disponibles.items(), key=lambda x: x[1].lower())
+# Diccionario: código → nombre
+idiomas_gtts = tts_langs()
 
-# Creamos diccionario nombre → código
-idiomas_codigo = {nombre.capitalize(): codigo for codigo, nombre in idiomas_ordenados}
-idiomas_nombres = list(idiomas_codigo.keys())
+# Creamos nombre → código (más cómodo para selectbox)
+idiomas_codigo = {nombre.capitalize(): codigo for codigo, nombre in idiomas_gtts.items()}
 
-# Menús desplegables con búsqueda
+# Lista de nombres ordenados para mostrar en el selectbox
+idiomas_nombres = sorted(idiomas_codigo.keys())
+
+# Mostrar selectboxes
 idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombres)
 idioma_destino_nombre = st.selectbox("Idioma de destino", idiomas_nombres)
 
+# Obtener los códigos de los seleccionados
 idioma_origen = idiomas_codigo[idioma_origen_nombre]
 idioma_destino = idiomas_codigo[idioma_destino_nombre]
 
