@@ -9,17 +9,17 @@ import tempfile
 st.title("🌍 Traductor por voz con Whisper")
 
 # Obtener lista de idiomas soportados por gTTS
-idiomas_disponibles = sorted(tts_langs().items())
+idiomas_disponibles = tts_langs()
+idiomas_ordenados = sorted(idiomas_disponibles.items(), key=lambda x: x[1].lower())
 
-# Recorremos el diccionario para búsqueda por nombre
-idiomas_nombre = {nombre for codigo, nombre in idiomas_disponibles}
-idiomas_codigo = {nombre: codigo for codigo, nombre in idiomas_disponibles}
+# Creamos diccionario nombre → código
+idiomas_codigo = {nombre.capitalize(): codigo for codigo, nombre in idiomas_ordenados}
+idiomas_nombres = list(idiomas_codigo.keys())
 
 # Menús desplegables con búsqueda
-idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombre)
-idioma_destino_nombre = st.selectbox("Idioma de destino", idiomas_nombre)
+idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombres)
+idioma_destino_nombre = st.selectbox("Idioma de destino", idiomas_nombres)
 
-# Obtener los códigos ISO 639-1
 idioma_origen = idiomas_codigo[idioma_origen_nombre]
 idioma_destino = idiomas_codigo[idioma_destino_nombre]
 
@@ -45,8 +45,8 @@ if audio_file is not None and api_key:
         texto = transcript.text
         st.success(f"📝 Texto transcrito: {texto}")
 
-        resultado = GoogleTranslator(source=idiomas_codigo[idioma_origen], target=idiomas_codigo[idioma_destino]).translate(texto)
-        st.success(f"🌐 Traducción: {resultado}")
+        resultado = GoogleTranslator(source=idioma_origen, target=idioma_destino).translate(texto)
+        tts = gTTS(text=resultado, lang=idioma_destino)
 
         tts = gTTS(text=resultado, lang=idiomas_codigo[idioma_destino])
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
