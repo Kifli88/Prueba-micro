@@ -4,6 +4,7 @@ from deep_translator import GoogleTranslator
 from gtts.lang import tts_langs
 from gtts import gTTS,lang
 import tempfile
+import traceback
 
 # Mostrar título
 st.title("🌍 Traductor por voz con Whisper")
@@ -55,7 +56,7 @@ if audio_file is not None and api_key:
             tts.save(fp.name)
             st.audio(fp.name, format="audio/mp3")
 
-    except Exception as e:
-        st.error(f"❌ Error: {e}")
+    except Exception:
+        traceback.print_exc()
 elif audio_file and not api_key:
     st.warning("Introduce tu API key para transcribir.")
