@@ -49,9 +49,9 @@ if audio_file is not None and api_key:
         st.success(f"📝 Texto transcrito: {texto}")
 
         resultado = GoogleTranslator(source=idioma_origen, target=idioma_destino).translate(texto)
+        st.success(f"🌐 Traducción: {resultado}")
+        
         tts = gTTS(text=resultado, lang=idioma_destino)
-
-        tts = gTTS(text=resultado, lang=idiomas_codigo[idioma_destino])
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
             tts.save(fp.name)
             st.audio(fp.name, format="audio/mp3")
