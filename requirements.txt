@@ -2,3 +2,4 @@ streamlit
 deep_translator
 gtts
 openai>=1.0
+traceback
