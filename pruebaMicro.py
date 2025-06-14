@@ -11,9 +11,9 @@ st.title("🌍 Traductor por voz con Whisper")
 # Obtener lista de idiomas soportados por gTTS
 idiomas_disponibles = tts_langs()
 
-# Invertimos el diccionario para búsqueda por nombre
-idiomas_nombre = {nombre: nombre for nombre, codigo in idiomas_disponibles.items()}
-idiomas_codigo = {nombre: codigo for nombre, codigo in idiomas_disponibles.items()}
+# Recorremos el diccionario para búsqueda por nombre
+idiomas_nombre = {nombre for codigo, nombre in idiomas_disponibles.items()}
+idiomas_codigo = {codigo: nombre for codigo, nombre in idiomas_disponibles.items()}
 
 # Menús desplegables con búsqueda
 idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombre)
