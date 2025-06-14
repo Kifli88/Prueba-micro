@@ -2,61 +2,14 @@ import streamlit as st
 from openai import OpenAI
 from deep_translator import GoogleTranslator
 from gtts.lang import tts_langs
-from gtts import gTTS
+from gtts import gTTS,lang
 import tempfile
 
 # Mostrar título
 st.title("🌍 Traductor por voz con Whisper")
 
 # Diccionario: código → nombre
-idiomas_gtts = idiomas_validos = {
-    'Afrikaans': 'af',
-    'Arabic': 'ar',
-    'Basque': 'eu',
-    'Bengali': 'bn',
-    'Catalan': 'ca',
-    'Chinese': 'zh',
-    'Czech': 'cs',
-    'Danish': 'da',
-    'Dutch': 'nl',
-    'English': 'en',
-    'Finnish': 'fi',
-    'French': 'fr',
-    'German': 'de',
-    'Greek': 'el',
-    'Gujarati': 'gu',
-    'Hindi': 'hi',
-    'Hungarian': 'hu',
-    'Indonesian': 'id',
-    'Italian': 'it',
-    'Japanese': 'ja',
-    'Kannada': 'kn',
-    'Korean': 'ko',
-    'Latin': 'la',
-    'Malayalam': 'ml',
-    'Marathi': 'mr',
-    'Nepali': 'ne',
-    'Norwegian': 'no',
-    'Polish': 'pl',
-    'Portuguese': 'pt',
-    'Romanian': 'ro',
-    'Russian': 'ru',
-    'Serbian': 'sr',
-    'Slovak': 'sk',
-    'Spanish': 'es',
-    'Swahili': 'sw',
-    'Swedish': 'sv',
-    'Tamil': 'ta',
-    'Telugu': 'te',
-    'Thai': 'th',
-    'Turkish': 'tr',
-    'Ukrainian': 'uk',
-    'Urdu': 'ur',
-    'Vietnamese': 'vi',
-    'Welsh': 'cy',
-    'Mandarin (China)': 'zh-cn',
-    'Mandarin (Taiwan)': 'zh-tw',
-}
+idiomas_gtts = lang.tts_langs()
 
 # Creamos nombre → código (más cómodo para selectbox)
 idiomas_codigo = {nombre.capitalize(): codigo for codigo, nombre in idiomas_gtts.items()}
