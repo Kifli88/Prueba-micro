@@ -10,7 +10,7 @@ import traceback # Para capturar detalles de errores si ocurren
 st.title("🌍 Traductor por voz con Whisper")
 
 # Carga del diccionario
-idiomas_gtts = lang.tts_langs()
+idiomas_gtts = tts_langs()
 
 # Cargamos los idiomas (codigo:nombre)
 idiomas_codigo = {nombre.capitalize(): codigo for codigo, nombre in idiomas_gtts.items()}
