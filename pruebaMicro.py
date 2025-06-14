@@ -13,7 +13,7 @@ idiomas_disponibles = sorted(tts_langs().items())
 
 # Recorremos el diccionario para búsqueda por nombre
 idiomas_nombre = {nombre for codigo, nombre in idiomas_disponibles}
-idiomas_codigo = {codigo: nombre for codigo, nombre in idiomas_disponibles}
+idiomas_codigo = {nombre: codigo for codigo, nombre in idiomas_disponibles}
 
 # Menús desplegables con búsqueda
 idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombre)
