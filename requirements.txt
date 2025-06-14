@@ -1,5 +1,4 @@
 streamlit
 deep_translator
 gtts
-traceback
 openai>=1.0
