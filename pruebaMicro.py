@@ -19,8 +19,8 @@ idiomas_codigo = {nombre.capitalize(): codigo for codigo, nombre in idiomas_gtts
 idiomas_nombres = sorted(idiomas_codigo.keys())
 
 # Mostrar selectboxes
-idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombres)
-idioma_destino_nombre = st.selectbox("Idioma de destino", idiomas_nombres)
+idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombres,index=idiomas_nombres.index("Spanish"))  # <- esto selecciona español por defecto
+idioma_destino_nombre = st.selectbox("Idioma de destino", idiomas_nombres, index=idiomas_nombres.index("English"))
 
 # Obtener los códigos de los seleccionados
 idioma_origen = idiomas_codigo[idioma_origen_nombre]
@@ -57,6 +57,6 @@ if audio_file is not None and api_key:
             st.audio(fp.name, format="audio/mp3")
 
     except Exception:
-        traceback.print_exc()
+        print("error: ",traceback.print_exc())
 elif audio_file and not api_key:
     st.warning("Introduce tu API key para transcribir.")
