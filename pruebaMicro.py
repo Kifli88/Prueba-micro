@@ -12,8 +12,8 @@ st.title("🌍 Traductor por voz con Whisper")
 idiomas_disponibles = tts_langs()
 
 # Invertimos el diccionario para búsqueda por nombre
-idiomas_nombre = list(idiomas_disponibles.keys())
-idiomas_codigo = {nombre: codigo for nombre, codigo in idiomas_disponibles.items()}
+idiomas_nombre = list(idiomas_disponibles.items())
+idiomas_codigo = {nombre: codigo for nombre, codigo in idiomas_disponibles.keys()}
 
 # Menús desplegables con búsqueda
 idioma_origen_nombre = st.selectbox("Idioma de origen", idiomas_nombre)
